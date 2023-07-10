@@ -1,0 +1,268 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Event Management API",
+    "description": "API documentation for the Event Management platform",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.example.com"
+    }
+  ],
+  "paths": {
+    "/login": {
+      "post": {
+        "summary": "User login",
+        "description": "Authenticate a user and retrieve an access token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/events": {
+      "get": {
+        "summary": "Get all events",
+        "description": "Retrieve a list of all upcoming events",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Event"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new event",
+        "description": "Create a new event and submit it for approval",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EventRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Event created successfully"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/events/{eventId}": {
+      "get": {
+        "summary": "Get event details",
+        "description": "Retrieve details of a specific event",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Event"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Event not found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update event details",
+        "description": "Update the details of a specific event",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EventRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Event updated successfully"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Event not found"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete an event",
+        "description": "Delete a specific event",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Event deleted successfully"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Event not found"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "LoginRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string",
+            "format": "email",
+            "example": "user@example.com"
+          },
+          "password": {
+            "type": "string",
+            "example": "password123"
+          }
+        }
+      },
+      "LoginResponse": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string",
+            "example": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiIxMjM0NTY3ODkwIiwibmFtZSI6IkpvaG4gRG9lIiwiaWF0IjoxNTE2MjM5MDIyfQ.SflKxwRJSMeKKF2QT4fwpMeJf36POk6yJV_adQssw5c"
+          },
+          "expiresIn": {
+            "type": "integer",
+            "example": 3600
+          }
+        }
+      },
+      "Event": {
+        "type": "object",
+        "properties": {
+          "eventId": {
+            "type": "string",
+            "example": "12345"
+          },
+          "title": {
+            "type": "string",
+            "example": "Example Event"
+          },
+          "description": {
+            "type": "string",
+            "example": "This is an example event."
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-07-15T10:00:00Z"
+          },
+          "location": {
+            "type": "string",
+            "example": "Event Hall"
+          }
+        }
+      },
+      "EventRequest": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string",
+            "example": "Example Event"
+          },
+          "description": {
+            "type": "string",
+            "example": "This is an example event."
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time",
+            "example": "2023-07-15T10:00:00Z"
+          },
+          "location": {
+            "type": "string",
+            "example": "Event Hall"
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,0 +1,173 @@
+openapi: 3.0.3
+info:
+  title: Event Management API
+  version: 1.0.0
+
+paths:
+  /api/auth/login:
+    post:
+      summary: Login with IIITD domain Gmail ID
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                email:
+                  type: string
+                  format: email
+                password:
+                  type: string
+      responses:
+        '200':
+          description: Successful login
+        '401':
+          description: Unauthorized
+
+  /api/events:
+    get:
+      summary: Get upcoming events
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    id:
+                      type: string
+                    title:
+                      type: string
+
+  /api/events/{eventId}:
+    get:
+      summary: Get details of a specific event
+      parameters:
+        - name: eventId
+          in: path
+          description: Event ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Successful operation
+          content:
+            application/json:
+              schema:
+                type: object
+                properties:
+                  id:
+                    type: string
+                  title:
+                    type: string
+                  description:
+                    type: string
+                  date:
+                    type: string
+                    format: date
+                  registrationOpen:
+                    type: boolean
+
+  /api/events/{eventId}/registration:
+    post:
+      summary: Register for a specific event
+      parameters:
+        - name: eventId
+          in: path
+          description: Event ID
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Registration successful
+
+  /api/events/{eventId}/query:
+    post:
+      summary: Post a query regarding an event
+      parameters:
+        - name: eventId
+          in: path
+          description: Event ID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                query:
+                  type: string
+      responses:
+        '200':
+          description: Query posted successfully
+
+  /api/clubs/{clubId}/events:
+    post:
+      summary: Apply for scheduling an event for a club
+      parameters:
+        - name: clubId
+          in: path
+          description: Club ID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                title:
+                  type: string
+                description:
+                  type: string
+                date:
+                  type: string
+                  format: date
+                time:
+                  type: string
+                  format: time
+                venue:
+                  type: string
+                registrationRequirements:
+                  type: string
+                registrationForm:
+                  type: string
+      responses:
+        '200':
+          description: Event request submitted successfully
+
+  /api/clubs/{clubId}/pages:
+    put:
+      summary: Edit club page information
+      parameters:
+        - name: clubId
+          in: path
+          description: Club ID
+          required: true
+          schema:
+            type: string
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: object
+              properties:
+                information:
+                  type: string
+                pastEventsImages:
+                  type: array
+                  items:
+                    type: string
+                pointOfContact:
+                  type: string
+      responses:
+        '200':
+          description: Event request submitted successfully

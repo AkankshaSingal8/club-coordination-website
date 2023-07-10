@@ -1,0 +1,1398 @@
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Event Management API",
+    "description": "API documentation for the Event Management platform",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.example.com"
+    }
+  ],
+  "paths": {
+    "/login": {
+      "post": {
+        "summary": "User login",
+        "description": "Authenticate a user and retrieve an access token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/events": {
+      "get": {
+        "summary": "Get all events",
+        "description": "Retrieve a list of all upcoming events",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Event"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new event",
+        "description": "Create a new event and submit it for approval",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EventRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Event created successfully"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/events/{eventId}": {
+      "get": {
+        "summary": "Get event details",
+        "description": "Retrieve details of a specific event",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Event"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Event not found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update event details",
+        "description": "Update the details of a specific event",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EventRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Event updated successfully"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Event not found"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete an event",
+        "description": "Delete a specific event",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Event deleted successfully"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Event not found"
+          }
+        }
+      }
+    },
+    "/clubs": {
+      "get": {
+        "summary": "Get all clubs",
+        "description": "Retrieve a list of all clubs",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Club"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/clubs/{clubId}": {
+      "get": {
+        "summary": "Get club details",
+        "description": "Retrieve details of a specific club",
+        "parameters": [
+          {
+            "name": "clubId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Club"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Club not found"
+          }
+        }
+      }
+    },
+    "/clubs/{clubId}/requests": {
+      "post": {
+        "summary": "Create a new event request",
+        "description": "Create a new event request for a specific club",
+        "parameters": [
+          {
+            "name": "clubId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EventRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Event request created successfully"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Club not found"
+          }
+        }
+      }
+    },
+    "/users/me": {
+      "get": {
+        "summary": "Get current user details",
+        "description": "Retrieve details of the currently logged-in user",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/landing": {
+      "get": {
+        "summary": "Get landing page",
+        "description": "Retrieve the main landing page",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "text/html": {}
+            }
+          }
+        }
+      }
+    },
+    "/explore": {
+      "get": {
+        "summary": "Explore events",
+        "description": "Retrieve a list of all events for exploration",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Event"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/register/{eventId}": {
+      "post": {
+        "summary": "Register for an event",
+        "description": "Register for a specific event",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Registration successful"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Event not found"
+          }
+        }
+      }
+    },
+    "/club-coordinators/login": {
+      "post": {
+        "summary": "Club coordinator login",
+        "description": "Authenticate a club coordinator and retrieve an access token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/club-coordinators/{clubId}/requests": {
+      "get": {
+        "summary": "Get club coordinator requests",
+        "description": "Retrieve a list of event requests for a specific club",
+        "parameters": [
+          {
+            "name": "clubId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EventRequest"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Club not found"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new event request as club coordinator",
+        "description": "Create a new event request for a specific club as a club coordinator",
+        "parameters": [
+          {
+            "name": "clubId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EventRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Event request created successfully"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Club not found"
+          }
+        }
+      }
+    },
+    "/student-council-coordinator/login": {
+      "post": {
+        "summary": "Student council coordinator login",
+        "description": "Authenticate a student council coordinator and retrieve an access token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/student-council-coordinator/requests": {
+      "get": {
+        "summary": "Get student council coordinator requests",
+        "description": "Retrieve a list of event requests for student council coordinator",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EventRequest"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "put": {
+        "summary": "Approve or reject event request",
+        "description": "Approve or reject a specific event request",
+        "requestBody": {
+          
+
+
+{
+  "openapi": "3.0.1",
+  "info": {
+    "title": "Event Management API",
+    "description": "API documentation for the Event Management platform",
+    "version": "1.0.0"
+  },
+  "servers": [
+    {
+      "url": "https://api.example.com"
+    }
+  ],
+  "paths": {
+    "/login": {
+      "post": {
+        "summary": "User login",
+        "description": "Authenticate a user and retrieve an access token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/events": {
+      "get": {
+        "summary": "Get all events",
+        "description": "Retrieve a list of all upcoming events",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Event"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new event",
+        "description": "Create a new event and submit it for approval",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EventRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Event created successfully"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/events/{eventId}": {
+      "get": {
+        "summary": "Get event details",
+        "description": "Retrieve details of a specific event",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Event"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Event not found"
+          }
+        }
+      },
+      "put": {
+        "summary": "Update event details",
+        "description": "Update the details of a specific event",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EventRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Event updated successfully"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Event not found"
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete an event",
+        "description": "Delete a specific event",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "204": {
+            "description": "Event deleted successfully"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Event not found"
+          }
+        }
+      }
+    },
+    "/clubs": {
+      "get": {
+        "summary": "Get all clubs",
+        "description": "Retrieve a list of all clubs",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema":{
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Club"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/clubs/{clubId}": {
+      "get": {
+        "summary": "Get club details",
+        "description": "Retrieve details of a specific club",
+        "parameters": [
+          {
+            "name": "clubId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/Club"
+                }
+              }
+            }
+          },
+          "404": {
+            "description": "Club not found"
+          }
+        }
+      }
+    },
+    "/clubs/{clubId}/requests": {
+      "post": {
+        "summary": "Create a new event request",
+        "description": "Create a new event request for a specific club",
+        "parameters": [
+          {
+            "name": "clubId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EventRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Event request created successfully"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Club not found"
+          }
+        }
+      }
+    },
+    "/users/me": {
+      "get": {
+        "summary": "Get current user details",
+        "description": "Retrieve details of the currently logged-in user",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/User"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/landing": {
+      "get": {
+        "summary": "Get landing page",
+        "description": "Retrieve the main landing page",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "text/html": {}
+            }
+          }
+        }
+      }
+    },
+    "/explore": {
+      "get": {
+        "summary": "Explore events",
+        "description": "Retrieve a list of all events for exploration",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/Event"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/register/{eventId}": {
+      "post": {
+        "summary": "Register for an event",
+        "description": "Register for a specific event",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Registration successful"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Event not found"
+          }
+        }
+      }
+    },
+    "/club-coordinators/login": {
+      "post": {
+        "summary": "Club coordinator login",
+        "description": "Authenticate a club coordinator and retrieve an access token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/club-coordinators/{clubId}/requests": {
+      "get": {
+        "summary": "Get club coordinator requests",
+        "description": "Retrieve a list of event requests for a specific club",
+        "parameters": [
+          {
+            "name": "clubId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EventRequest"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Club not found"
+          }
+        }
+      },
+      "post": {
+        "summary": "Create a new event request as club coordinator",
+        "description": "Create a new event request for a specific club as a club coordinator",
+        "parameters": [
+          {
+            "name": "clubId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EventRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Event request created successfully"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Club not found"
+          }
+        }
+      }
+    },
+    "/student-council-coordinator/login": {
+      "post": {
+        "summary": "Student council coordinator login",
+        "description": "Authenticate a student council coordinator and retrieve an access token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful login",
+            "content": {
+              "application/json": {
+                "schema": {
+```json
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/student-council-coordinator/requests": {
+      "get": {
+        "summary": "Get student council coordinator requests",
+        "description": "Retrieve a list of event requests for student council coordinator",
+        "responses": {
+          "200": {
+            "description": "Successful operation",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "array",
+                  "items": {
+                    "$ref": "#/components/schemas/EventRequest"
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      },
+      "put": {
+        "summary": "Approve or reject event request",
+        "description": "Approve or reject a specific event request",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/RequestApproval"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Request approval successful"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/dosa/login": {
+      "post": {
+        "summary": "DoSA login",
+        "description": "Authenticate a DoSA admin and retrieve an access token",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Successful login",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "$ref": "#/components/schemas/LoginResponse"
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/dosa/veto/{eventId}": {
+      "put": {
+        "summary": "Veto an event",
+        "description": "Veto or suggest amendments to a specific event",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/EventAmendment"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Veto or amendment suggestion successful"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          },
+          "404": {
+            "description": "Event not found"
+          }
+        }
+      }
+    },
+    "/dosa/clubs": {
+      "post": {
+        "summary": "Create a new club",
+        "description": "Create a new club as a DoSA admin",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/ClubRequest"
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Club created successfully"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    },
+    "/dosa/login-details": {
+      "put": {
+        "summary": "Update login details",
+        "description": "Update login details for student council club coordinator and club coordinators",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "$ref": "#/components/schemas/LoginDetailsUpdate"
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Login details updated successfully"
+          },
+          "400": {
+            "description": "Bad request"
+          },
+          "401": {
+            "description": "Unauthorized"
+          }
+        }
+      }
+    }
+  },
+  "components": {
+    "schemas": {
+      "LoginRequest": {
+        "type": "object",
+        "properties": {
+          "email": {
+            "type": "string"
+          },
+          "password": {
+            "type": "string"
+          }
+        }
+      },
+      "LoginResponse": {
+        "type": "object",
+        "properties": {
+          "accessToken": {
+            "type": "string"
+          },
+          "user": {
+            "$ref": "#/components/schemas/User"
+          }
+        }
+      },
+      "User": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "email": {
+            "type": "string"
+          },
+          "role": {
+            "type": "string"
+          }
+        }
+      },
+      "Event": {
+        "type": "object",
+        "properties": {
+          "id": {
+            "type": "string"
+          },
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "domain": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "time": {
+            "type": "string"
+          },
+          "participationExpected": {
+            "type": "integer"
+          },
+          "venue": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string"
+          },
+          "clubId": {
+            "type": "string"
+          }
+        }
+      },
+      "EventRequest": {
+        "type": "object",
+        "properties": {
+          "title": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "domain": {
+            "type": "string"
+          },
+          "date": {
+            "type": "string",
+            "format": "date-time"
+          },
+          "time": {
+            "type": "string"
+          },
+          "participationExpected": {
+            "type": "integer"
+          },
+          "venue": {
+            "type": "string"
+          }
+        }
+      },
+      "Club": {
+        "type": "object",
+        "properties":```json
+        {
+          "id": {
+            "type": "string"
+          },
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "coordinator": {
+            "type": "string"
+          },
+          "members": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      },
+      "RequestApproval": {
+        "type": "object",
+        "properties": {
+          "requestId": {
+            "type": "string"
+          },
+          "status": {
+            "type": "string",
+            "enum": ["approved", "rejected"]
+          }
+        }
+      },
+      "EventAmendment": {
+        "type": "object",
+        "properties": {
+          "eventId": {
+            "type": "string"
+          },
+          "amendment": {
+            "type": "string"
+          }
+        }
+      },
+      "ClubRequest": {
+        "type": "object",
+        "properties": {
+          "name": {
+            "type": "string"
+          },
+          "description": {
+            "type": "string"
+          },
+          "coordinator": {
+            "type": "string"
+          }
+        }
+      },
+      "LoginDetailsUpdate": {
+        "type": "object",
+        "properties": {
+          "studentCouncilCoordinator": {
+            "type": "string"
+          },
+          "clubCoordinators": {
+            "type": "array",
+            "items": {
+              "type": "string"
+            }
+          }
+        }
+      }
+    }
+  }
+}
